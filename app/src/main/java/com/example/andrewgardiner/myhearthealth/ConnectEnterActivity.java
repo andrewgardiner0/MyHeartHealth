@@ -54,6 +54,7 @@ public class ConnectEnterActivity extends ListActivity {
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
 
+    private ListView lis;
 
 
 
@@ -88,6 +89,9 @@ public class ConnectEnterActivity extends ListActivity {
             finish();
             return;
         }
+        lis = (ListView) findViewById(R.id.list);
+        mLeDeviceListAdapter = new LeDeviceListAdapter();
+        setListAdapter(mLeDeviceListAdapter);
         scanLeDevice(true);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

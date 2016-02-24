@@ -16,4 +16,14 @@
     <string name="unknown_characteristic">unknown characteristic</string>
     <string name="app_name">MyHeartHealth</string>
     <string name="title_activity_connect_enter">Connect and Enter</string>
+    <string name="title_activity_questions">QuestionsActivity</string>
+    <string name="yes">Yes.</string>
+    <string name="no">no</string>
+    <string name="Question_1">Are you experiencing chest pain? </string>
+    <string name="Question_2">Do you have pain in your arm(s), back, neck, or jaw?</string>
+    <string name="Question_3">Do you have stomach pain?</string>
+    <string name="Question_4">Are you experiencing shortness of breath, nausea or lightheadedness?</string>
+    <string name="Question_5">Are you breaking out in a sweat?</string>
+    <string name="Question_6">Are you experiencing fatigue?</string>
+    <string name="action_settings">Settings</string>
 </resources>
