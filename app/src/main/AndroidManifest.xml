@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
-    <receiver android:process=":remote" android:name=".Alarm"></receiver>
+
 
     <application
         android:allowBackup="true"
@@ -29,6 +29,7 @@
             android:name=".PillScheduler"
             android:label="@string/title_activity_pill_scheduler"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <receiver android:name=".NotificationPublisher" />
     </application>
 
 </manifest>

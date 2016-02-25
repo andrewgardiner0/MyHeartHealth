@@ -1,7 +1,12 @@
 package com.example.andrewgardiner.myhearthealth;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.StringTokenizer;
 
 public class PillScheduler extends AppCompatActivity {
@@ -53,7 +60,7 @@ public class PillScheduler extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Alarm alarm = new Alarm();
+               /* Alarm alarm = new Alarm();
                 final Intent intent = new Intent();
                 intent.putIntegerArrayListExtra("days", days);
                 intent.putExtra("drugName", drugName.toString());
@@ -61,6 +68,10 @@ public class PillScheduler extends AppCompatActivity {
                 intent.putExtra("hour",hour());
                 intent.putExtra("minute", minute());
                 alarm.SetAlarm(v.getContext(), hour(), minute(), days, drugName.toString(), drugStrength.toString());
+                Toast.makeText(v.getContext(), "notification set", Toast.LENGTH_LONG).show();
+                */
+
+                showNotificationClicked(v);
 
 
             }
@@ -70,7 +81,35 @@ public class PillScheduler extends AppCompatActivity {
 
 
 
+
     }
+
+    public void showNotificationClicked(View v) {
+        scheduleNotification(getNotification("30 second delay"), 10000);
+    }
+    private void scheduleNotification(Notification notification, int delay) {
+
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+    private Notification getNotification(String content) {
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle("Scheduled Notification");
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        return builder.build();
+    }
+
+
+
+
     public int hour(){
         int hour = 0;
         String delim = ":";
