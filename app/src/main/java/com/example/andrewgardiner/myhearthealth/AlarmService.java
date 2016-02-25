@@ -18,14 +18,14 @@ public class AlarmService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        alarm.SetAlarm(this);
+        //alarm.SetAlarm(this);
         return START_STICKY;
     }
 
     @Override
     public void onStart(Intent intent, int startId)
     {
-        alarm.SetAlarm(this);
+       // alarm.SetAlarm(this);
     }
 
     @Override

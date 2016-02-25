@@ -9,12 +9,14 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
     private Button btnvitals;
     private Button btnqs;
+    private Button btnpills;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnvitals = (Button) findViewById(R.id.btnVitals);
         btnqs = (Button) findViewById(R.id.btnQuestions);
+        btnpills = (Button) findViewById(R.id.btnPills);
         btnvitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Intent activity = new Intent(v.getContext(), QuestionsActivity.class);
+                startActivity(activity);
+            }
+        });
+        btnpills.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent activity = new Intent(v.getContext(), PillScheduler.class);
                 startActivity(activity);
             }
         });
