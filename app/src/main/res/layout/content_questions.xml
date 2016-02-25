@@ -136,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/q5yes"
-                android:checked="true"
+
                 android:text="@string/yes"
                 android:onClick="onRadioButtonClicked"/>
 
@@ -172,6 +172,12 @@
                 android:text="@string/no"
                 android:onClick="onRadioButtonClicked"/>
         </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:id="@+id/btnSubmit" />
 
     </LinearLayout>
 
