@@ -40,5 +40,14 @@
     <string name="Drug_name">Drug Name</string>
     <string name="Drug_strength">Drug Strength</string>
     <string name="Time">Time to take</string>
+    <string name="title_activity_device_scan">DeviceScanActivity</string>
+    <string name="title_activity_enter">EnterActivity</string>
+    <string name="Device_address">device Address</string>
+    <string name ="label_state">state</string>
+    <string name="disconnected">disconnected</string>
+    <string name="label_data">BPM</string>
+    <string name="no_data">no data</string>
+    <string name="connected">connected</string>
+
 
 </resources>

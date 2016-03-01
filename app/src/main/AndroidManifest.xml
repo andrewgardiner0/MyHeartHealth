@@ -4,8 +4,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -24,12 +23,18 @@
         <activity
             android:name=".QuestionsActivity"
             android:label="@string/title_activity_questions"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PillScheduler"
             android:label="@string/title_activity_pill_scheduler"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <receiver android:name=".NotificationPublisher" />
+
+        <activity
+            android:name=".EnterActivity"
+            android:label="@string/title_activity_enter"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

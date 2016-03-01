@@ -85,23 +85,31 @@ public class PillScheduler extends AppCompatActivity {
     }
 
     public void showNotificationClicked(View v) {
-        scheduleNotification(getNotification("30 second delay"), 10000);
+        String notificationText = "It's time to take" + drugName.toString() + drugStrength.toString();
+        scheduleNotification(getNotification(notificationText));
     }
-    private void scheduleNotification(Notification notification, int delay) {
+    private void scheduleNotification(Notification notification) {
+        Calendar cal =  Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.add(Calendar.HOUR_OF_DAY ,15);
+       // cal.add(Calendar.MINUTE, );
+        //cal.add(Calendar.DAY_OF_WEEK,5);
+
+
 
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        //long futureInMillis = SystemClock.elapsedRealtime();
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
 
     private Notification getNotification(String content) {
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setContentTitle("Scheduled Notification");
+        builder.setContentTitle("Pills");
         builder.setContentText(content);
         builder.setSmallIcon(R.drawable.ic_launcher);
         return builder.build();
