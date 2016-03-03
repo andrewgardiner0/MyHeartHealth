@@ -63,11 +63,11 @@ public class EnterActivity extends AppCompatActivity {
     private TextView BLComment;
     private TextView riskComment;
     String data;
+    Profile prevprofile;
 
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
 
-    // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -78,7 +78,6 @@ public class EnterActivity extends AppCompatActivity {
                 finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-           Log.d(TAG, "binded");
             mBluetoothLeService.connect(mDeviceAddress);
         }
 
@@ -100,11 +99,11 @@ public class EnterActivity extends AppCompatActivity {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
-                updateConnectionState(R.string.connected);
+               // updateConnectionState(R.string.connected);
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-                updateConnectionState(R.string.disconnected);
+                //updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
                 clearUI();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
@@ -117,39 +116,7 @@ public class EnterActivity extends AppCompatActivity {
         }
     };
 
-    // If a given GATT characteristic is selected, check for supported features.  This sample
-    // demonstrates 'Read' and 'Notify' features.  See
-    // http://d.android.com/reference/android/bluetooth/BluetoothGatt.html for the complete
-    // list of supported characteristic features.
-    private final ExpandableListView.OnChildClickListener servicesListClickListner =
-            new ExpandableListView.OnChildClickListener() {
-                @Override
-                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-                                            int childPosition, long id) {
-                    if (mGattCharacteristics != null) {
-                        final BluetoothGattCharacteristic characteristic =
-                                mGattCharacteristics.get(groupPosition).get(childPosition);
-                        final int charaProp = characteristic.getProperties();
-                        if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-                            // If there is an active notification on a characteristic, clear
-                            // it first so it doesn't update the data field on the user interface.
-                            if (mNotifyCharacteristic != null) {
-                                mBluetoothLeService.setCharacteristicNotification(
-                                        mNotifyCharacteristic, false);
-                                mNotifyCharacteristic = null;
-                            }
-                            mBluetoothLeService.readCharacteristic(characteristic);
-                        }
-                        if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
-                            mNotifyCharacteristic = characteristic;
-                            mBluetoothLeService.setCharacteristicNotification(
-                                    characteristic, true);
-                        }
-                        return true;
-                    }
-                    return false;
-                }
-            };
+
 
     private void clearUI() {
         mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
@@ -198,15 +165,17 @@ public class EnterActivity extends AppCompatActivity {
         BloodGlucose.setText(mBloodGlucose);
         retriever = new DatabaseManager(this);
 
+
         //  getActionBar().setTitle(mDeviceName);
       //  getActionBar().setDisplayHomeAsUpEnabled(true);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-        Toast.makeText(this, "binded", Toast.LENGTH_LONG).show();
+     //   Toast.makeText(this, "binded", Toast.LENGTH_LONG).show();
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 retriever.open();
+                prevprofile = retriever.getPrevious();
                 Profile profile= new Profile();
                 int bpm = Integer.parseInt(mDataField.getText().toString());
                 int sys=Integer.parseInt(SystolicBP.getText().toString());
@@ -218,6 +187,7 @@ public class EnterActivity extends AppCompatActivity {
                 profile = retriever.createProfile(bpm,sys,dis,bl,we);
                 Log.d(TAG,"Success");
                 retriever.close();
+                comments();
 
 
             }
@@ -231,81 +201,139 @@ public class EnterActivity extends AppCompatActivity {
         String bpmHighwarning = "Your bpm is over 100, you should take a rest. if persists seek medical help";
         String bpmLow = "Your bpm is bellow 49, seek medical help";
         String bpmnorm = "Your bpm is normal";
+        String bpmmedlow = "Your bpm is relatively low";
+        String bpmmedhigh = "Your bpm is relatively high";
         String SysHigh ="your Systolic blood pressure is high, over 140 which is high risk";
+        String sysmedlow = "Your Systolic blood pressure is relatively low";
+        String sysmedhigh ="Your Systolic blood pressure is relatively high";
         String SysLow = "Your Systolic blood pressure is low, below 79 which is a high risk";
         String Sysnorm = "Your Systolic blood pressure is normal";
         String DiaHigh = "Your Diastolic blood pressure is high, over 90 which is a high risk";
+        String diamedlow = "Your Diastolic blood pressure is relatively low";
+        String diamedhigh = "Your Diastolic blood pressure is relatively high";
         String DiaLow = "your Diastolic blood pressure is low, below 49 which is a high risk";
         String DiaNorm = "Your diastolic blood pressure is normal";
         String WeHigh = "your weight has gone up over 2lbs since last time, which isa high risk";
+        String wemedhigh = "Your weight has increased slightly";
+        String wemedlow = "Your weight has decreased slightly";
         String Welow = "Your wight has dropped by over 2lbs since last time, Which is a high Risk";
         String wenorm = "Your weight has not changed significantly";
         String BLHigh ="your blood gluscose level is over 250, which is a high risk";
+        String blmedhigh = "Your blood glucose is relatively high";
+        String blmedlow = "Your blood glucose is relatively low";
         String BLLow = "Your blood glucose lever is below 50, which is a high risk";
         String BLNorm = "your Blood glucose level is normal";
 
-        int bpmcode = analyser.analyseBPM(profile.getBpm());
-        int systaliccode = analyser.analyseSYS(profile.getSystalicBP());
-        int diacode = analyser.analyseDIA(profile.getDistolicBP());
-        int wecode = analyser.analyseWeight(Integer.parseInt(Weight.getText().toString()), profile.getWeight());
-        int blcode = analyser.analyseBL(profile.getBlood_glucose());
+        int bpmcode = analyser.checkBPM(profile.getBpm());
+        int systaliccode = analyser.checkSYS(profile.getSystalicBP());
+        int diacode = analyser.checkDIA(profile.getDistolicBP());
+        int wecode = analyser.checkWeight(profile.getWeight(), prevprofile.getWeight());
+        int blcode = analyser.checkBL(profile.getBlood_glucose());
 
-        if(bpmcode == 3) {
-            if (profile.getBpm() < 49)
-                bpmComment.setText(bpmLow);
-            else {
-                bpmComment.setText(bpmHighwarning);
-            }
-        }
-        else if(bpmcode == 1)
-            bpmComment.setText(bpmnorm);
+       if(bpmcode ==1){
+           bpmComment.setText(bpmnorm);
+       }
+        else if(bpmcode ==2){
+           bpmComment.setText(bpmmedlow);
+       }
+        else if(bpmcode == 3){
+           bpmComment.setText(bpmmedhigh);
+       }
+        else if(bpmcode == 4) {
+           bpmComment.setText(bpmHighwarning);
+       }
+        else if(bpmcode == 5){
+           bpmComment.setText(bpmLow);
+       }
 
-        if(systaliccode == 3) {
-            if (profile.getSystalicBP() <= 79)
-                systolicComment.setText(SysLow);
-            else {
-                systolicComment.setText(SysHigh);
-            }
-        }
-        else if(systaliccode == 1)
+        if(systaliccode ==1){
             systolicComment.setText(Sysnorm);
-
-        if(diacode == 3) {
-            if (profile.getDistolicBP() < 49)
-                diastolicComment.setText(DiaLow);
-            else {
-                diastolicComment.setText(DiaHigh);
-            }
         }
-        else if(diacode == 1)
+        else if(systaliccode ==2){
+            systolicComment.setText(sysmedlow);
+        }
+        else if(systaliccode == 3){
+            systolicComment.setText(sysmedhigh);
+        }
+        else if(systaliccode == 4) {
+            systolicComment.setText(SysLow);
+        }
+        else if(systaliccode == 5){
+            systolicComment.setText(SysHigh);
+        }
+
+        if(diacode ==1){
             diastolicComment.setText(DiaNorm);
-
-        if(wecode == 3){
-            if(Integer.parseInt(Weight.getText().toString())- profile.getWeight() > 2){
-                weightComment.setText(WeHigh);
-            }else{
-                weightComment.setText(Welow);
-            }
         }
-        else if(wecode == 1)
+        else if(diacode ==2){
+            diastolicComment.setText(diamedlow);
+        }
+        else if(diacode == 3){
+            diastolicComment.setText(diamedhigh);
+        }
+        else if(diacode == 4) {
+            diastolicComment.setText(DiaLow);
+        }
+        else if(diacode == 5){
+            diastolicComment.setText(DiaHigh);
+        }
+
+        if(diacode ==1){
+            diastolicComment.setText(DiaNorm);
+        }
+        else if(diacode ==2){
+            diastolicComment.setText(diamedlow);
+        }
+        else if(diacode == 3){
+            diastolicComment.setText(diamedhigh);
+        }
+        else if(diacode == 4) {
+            diastolicComment.setText(DiaLow);
+        }
+        else if(diacode == 5){
+            diastolicComment.setText(DiaHigh);
+        }
+
+
+        if(wecode ==1){
             weightComment.setText(wenorm);
-        if(blcode == 3){
-            if(profile.getBlood_glucose() <  50){
-                BLComment.setText(BLLow);
-            }else{
-                BLComment.setText(BLHigh);
-            }
-        }else if(blcode == 1)
+        }
+        else if(wecode ==2){
+            weightComment.setText(wemedlow);
+        }
+        else if(wecode == 3){
+            weightComment.setText(wemedhigh);
+        }
+        else if(wecode == 4) {
+            weightComment.setText(WeHigh);
+        }
+        else if(wecode == 5){
+            weightComment.setText(Welow);
+        }
+
+        if(blcode ==1){
             BLComment.setText(BLNorm);
+        }
+        else if(blcode ==2){
+            BLComment.setText(blmedlow);
+        }
+        else if(blcode == 3){
+            BLComment.setText(blmedhigh);
+        }
+        else if(blcode == 4) {
+            BLComment.setText(BLLow);
+        }
+        else if(blcode == 5){
+            BLComment.setText(BLHigh);
+        }
 
 
-       int decisionCode = analyser.analyse(profile.getBpm(),profile.getSystalicBP(),profile.getDistolicBP(),Integer.parseInt(Weight.getText().toString()),profile.getWeight(),profile.getBlood_glucose());
+        int decisionCode = analyser.analyse(profile.getBpm(),profile.getSystalicBP(),profile.getDistolicBP(),profile.getWeight(),prevprofile.getWeight(),profile.getBlood_glucose());
 
         // Toast.makeText(this,Integer.toString(decisionCode),Toast.LENGTH_LONG).show();
         if(decisionCode == 1){
             riskComment.setText("normal");
-        }
-        else if(decisionCode == 2){
+        } else if (decisionCode == 2) {
             riskComment.setText("Medium Risk");
         }
         else if(decisionCode == 3){
@@ -348,22 +376,16 @@ public class EnterActivity extends AppCompatActivity {
 
 
 
-    private void updateConnectionState(final int resourceId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mConnectionState.setText(resourceId);
-            }
-        });
-    }
+
 
     private void displayData(String data) {
 
-        this.data = data;
+       // this.data = data;
 
         if (data != null) {
             mDataField.setText(data);
         }
+        Log.d(TAG,"Data is null");
     }
 
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.

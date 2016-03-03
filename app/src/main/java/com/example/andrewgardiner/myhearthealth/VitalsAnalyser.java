@@ -91,14 +91,33 @@ public class VitalsAnalyser {
         else if(bpm >= BPM_MED_RISK_BELOW_AVG_LOWER & bpm <= BPM_MED_RISK_BELOW_AVG_UPPER){
             return 2;
         }
-        else if(bpm >= BPM_MED_RISK_BELOW_AVG_LOWER & bpm <= BPM_MED_RISK_BELOW_AVG_UPPER){
-            return 2;
-        }
+
         else if(bpm >= BPM_MED_RISK_ABOVE_AVG_LOWER & bpm <= BPM_MED_RISK_ABOVE_AVG_UPPER){
             return 2;
         }
         else if(bpm <= BPM_HIGH_RISK_BELOW_AVG || bpm >= BPM_HIGH_RISK_ABOVE_AVG){
             return 3;
+        }
+        return 1;
+    }
+    public int checkBPM(int bpm){
+
+
+        if(bpm >= BPM_NORM_LOWER & bpm <=BPM_NORM_UPPER) {
+            return 1;
+        }
+        else if(bpm >= BPM_MED_RISK_BELOW_AVG_LOWER & bpm <= BPM_MED_RISK_BELOW_AVG_UPPER){
+            return 2;
+        }
+
+        else if(bpm >= BPM_MED_RISK_ABOVE_AVG_LOWER & bpm <= BPM_MED_RISK_ABOVE_AVG_UPPER){
+            return 3;
+        }
+        else if(bpm <= BPM_HIGH_RISK_BELOW_AVG ){
+            return 4;
+        }
+        else if(bpm >= BPM_HIGH_RISK_ABOVE_AVG){
+            return 5;
         }
         return 1;
     }
@@ -116,6 +135,23 @@ public class VitalsAnalyser {
 
         return 1;
     }
+    public int checkSYS(int sys){
+        if(sys >= SYS_NORM_LOWER & sys <= SYS_NORM_UPPER){
+            return 1;
+        }else if(sys >= SYS_MED_RISK_BELOW_AVG_LOWER & sys <= SYS_MED_RISK_BELOW_AVG_UPPER){
+            return 2;
+        }else if(sys >= SYS_MED_RISK_ABOVE_AVG_LOWER & sys <= SYS_MED_RISK_ABOVE_AVG_UPPER){
+            return 3;
+        }else if(sys <= SYS_HIGH_RISK_BELOW_AVG ){
+            return 4;
+        }
+        else if(sys >= SYS_HIGH_RISK_ABOVE_AVG){
+            return 5;
+        }
+
+        return 1;
+
+    }
     public int analyseDIA(int dia){
         System.out.println(dia);
         if(dia >=DIA_NORM_LOWER & dia <= DIA_NORM_UPPER ){
@@ -127,6 +163,24 @@ public class VitalsAnalyser {
             return 2;
         }else if(dia <= DIA_HIGH_RISK_BELOW_AVG || dia >= DIA_HIGH_RISK_ABOVE_AVG){
             return 3;
+        }
+
+        return 1;
+    }
+    public int checkDIA(int dia){
+
+        if(dia >=DIA_NORM_LOWER & dia <= DIA_NORM_UPPER ){
+            return 1;
+        }
+        else if( dia >= DIA_MED_RISK_BELOW_AVG_LOWER & dia <= DIA_MED_RISK_BELOW_AVG_UPPER){
+            return 2;
+        }else if(dia >= DIA_MED_RISK_ABOVE_AVG_LOWER & dia <= DIA_MED_RISK_ABOVE_AVG_UPPER){
+            return 3;
+        }else if(dia <= DIA_HIGH_RISK_BELOW_AVG ){
+            return 4;
+        }
+        else if(dia >= DIA_HIGH_RISK_ABOVE_AVG){
+            return 5;
         }
 
         return 1;
@@ -152,8 +206,31 @@ public class VitalsAnalyser {
         return 1;
 
     }
+    public int checkWeight(int weight, int prevWeight){
+
+        int difference = prevWeight - weight;
+
+        if(difference >= -1 & difference <= 1){
+            return 1;
+        }
+        else if(difference >= -1.5 & difference <= -1){
+            return 2;
+        }
+        else if(difference >= 1 & difference <= 1.5){
+            return 3;
+        }
+        else if(difference < -1.5 ){
+            return 4;
+        }
+        else if( difference > 1.5){
+            return 5;
+        }
+
+        return 1;
+
+    }
     public int analyseBL(int bl){
-        System.out.println(bl);
+
         if(bl >= BL_NORM_LOWER & bl <= BL_NORM_UPPER){
             return 1;
         }else if(bl >= BL_MED_RISK_BELOW_AVG_LOWER & bl <= BL_MED_RISK_BELOW_AVG_UPPER){
@@ -162,6 +239,22 @@ public class VitalsAnalyser {
             return 2;
         }else if(bl <= BL_HIGH_RISK_BELOW_AVG || bl >= BL_HIGH_RISK_ABOVE_AVG)
             return 3;
+
+        return 1;
+    }
+    public int checkBL(int bl){
+
+        if(bl >= BL_NORM_LOWER & bl <= BL_NORM_UPPER){
+            return 1;
+        }else if(bl >= BL_MED_RISK_BELOW_AVG_LOWER & bl <= BL_MED_RISK_BELOW_AVG_UPPER){
+            return 2;
+        }else if(bl >= BL_MED_RISK_ABOVE_AVG_LOWER & bl <= BL_MED_RISK_ABOVE_AVG_UPPER){
+            return 3;
+        }else if(bl <= BL_HIGH_RISK_BELOW_AVG)
+            return 4;
+        else if( bl >= BL_HIGH_RISK_ABOVE_AVG){
+            return 5;
+        }
 
         return 1;
     }
