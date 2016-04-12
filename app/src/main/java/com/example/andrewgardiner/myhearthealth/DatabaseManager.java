@@ -57,12 +57,17 @@ public class DatabaseManager {
     }
     public List<Profile> allData(){
         List<Profile> profiles = new ArrayList<Profile>();
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_DATA, allColumns, null, null, null, null, null);
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
-            Profile profile = cursorToProfile(cursor);
-            profiles.add(profile);
-            cursor.moveToNext();
+        String query = "SELECT * FROM " + MySQLiteHelper.TABLE_DATA;
+      // Cursor cursor = database.query(MySQLiteHelper.TABLE_DATA, allColumns, null, null, null, null, null);
+       // cursor.moveToFirst();
+        SQLiteDatabase db  = helper.getReadableDatabase();
+        Cursor cursor    = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
+                Profile profile = cursorToProfile(cursor);
+                profiles.add(profile);
+                cursor.moveToNext();
+            }
         }
         cursor.close();
         return profiles;

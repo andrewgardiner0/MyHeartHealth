@@ -16,7 +16,7 @@
     <string name="unknown_characteristic">unknown characteristic</string>
     <string name="app_name">MyHeartHealth</string>
     <string name="title_activity_connect_enter">Connect and Enter</string>
-    <string name="title_activity_questions">QuestionsActivity</string>
+    <string name="title_activity_questions">Questions</string>
     <string name="yes">Yes.</string>
     <string name="no">no</string>
     <string name="Question_1">Are you experiencing chest pain? </string>
@@ -43,11 +43,13 @@
     <string name="title_activity_device_scan">DeviceScanActivity</string>
     <string name="title_activity_enter">EnterActivity</string>
     <string name="Device_address">device Address</string>
-    <string name ="label_state">state</string>
+    <string name="label_state">state</string>
     <string name="disconnected">disconnected</string>
     <string name="label_data">BPM</string>
     <string name="no_data">no data</string>
     <string name="connected">connected</string>
+    <string name="title_activity_list">List</string>
+    <string name="title_activity_graphviews">graphviews</string>
 
 
 </resources>

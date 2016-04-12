@@ -34,8 +34,20 @@
         <activity
             android:name=".EnterActivity"
             android:label="@string/title_activity_enter"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".BluetoothLeService"
+            android:enabled="true" />
+
+        <activity
+            android:name=".List"
+            android:label="@string/title_activity_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".graphviews"
+            android:label="@string/title_activity_graphviews"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <service android:name=".BluetoothLeService" android:enabled="true"/>
     </application>
 
 </manifest>

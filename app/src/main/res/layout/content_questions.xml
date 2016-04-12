@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtQ1"
+            android:inputType="none"
             android:text="@string/Question_1"/>
 
         <RadioGroup
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtQ2"
+            android:inputType="none"
             android:text="@string/Question_2"/>
 
         <RadioGroup
@@ -71,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtq3"
+            android:inputType="none"
             android:text="@string/Question_3"/>
 
         <RadioGroup
@@ -98,6 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtq4"
+            android:inputType="none"
             android:text="@string/Question_4"
             android:onClick="onRadioButtonClicked"/>
 
@@ -126,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtq5"
+            android:inputType="none"
             android:text="@string/Question_5"/>
 
         <RadioGroup
@@ -152,6 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtq6"
+            android:inputType="none"
             android:text="@string/Question_6"/>
 
         <RadioGroup
